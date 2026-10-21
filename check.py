@@ -160,22 +160,32 @@ def main():
     fail = os.environ.get("INPUT_FAIL", "true").lower() == "true"
     if check_runtime:
         runtime()
+    # Every matching file anywhere in the tree is checked (monorepos and modular setups included), except vendor/ etc.
+    scanned = {"composer.json": [], "Dockerfile": [], "version file": [], "workflow": []}
     for p in walk(root):
         name = os.path.basename(p)
         rp = rel(p, root)
         if name == "composer.json":
             composer(p, root)
+            scanned["composer.json"].append(rp)
         elif name == "Dockerfile" or name.startswith("Dockerfile.") or name.endswith(".Dockerfile") or name.lower() == "containerfile":
             dockerfile(p, root)
+            scanned["Dockerfile"].append(rp)
         elif name in (".php-version", ".tool-versions"):
             version_files(p, root)
+            scanned["version file"].append(rp)
         elif rp.startswith(".github/workflows/") and name.endswith((".yml", ".yaml")):
             workflow(p, root)
+            scanned["workflow"].append(rp)
 
     errors = [f for f in findings if f[0] == "error"]
     warns = [f for f in findings if f[0] == "warning"]
     oks = [f for f in findings if f[0] == "ok"]
     print(f"PHP2Shell check: {len(errors)} to fix, {len(warns)} to review, {len(oks)} fixed.")
+    print("Scanned " + ", ".join(f"{len(v)} {k}{'' if k.endswith('json') or len(v) == 1 else 's'}" for k, v in scanned.items()) + " (vendor/ and node_modules/ skipped).")
+    for k, v in scanned.items():
+        if len(v) > 1 or (k == "composer.json" and v):
+            print(f"  {k}: " + ", ".join(v[:20]) + (" ..." if len(v) > 20 else ""))
     for level, file, line, msg in findings:
         if GH and level in ("error", "warning"):
             props = f"file={file},line={line or 1},title=PHP2Shell" if file else "title=PHP2Shell"

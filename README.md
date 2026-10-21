@@ -38,7 +38,9 @@ jobs:
 | `.php-version`, `.tool-versions` | `8.2.30` | error if unfixed |
 | Workflows | `php-version: "8.0"` in setup-php | error; old versions in a test matrix are warnings |
 
-`vendor/` and `node_modules/` are skipped. It only reads.
+It walks the whole repository, so monorepos and modular setups with several `composer.json` files, Dockerfiles or
+workflows get every one checked, and the output lists which files it scanned. `vendor/` and `node_modules/` are
+skipped. It only reads.
 
 ## Inputs and outputs
 
