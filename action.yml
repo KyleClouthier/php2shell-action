@@ -1,5 +1,5 @@
 name: PHP2Shell Check
-description: Fail the build if your project runs or pins a PHP version without the PHP2Shell fix (runner, composer.json, Dockerfiles, workflows).
+description: Fail the build when your project runs or pins a PHP version without the PHP2Shell fix.
 author: Kyle Clouthier
 branding:
   icon: shield
