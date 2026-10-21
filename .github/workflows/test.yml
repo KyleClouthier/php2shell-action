@@ -1,0 +1,28 @@
+name: self-test
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        id: run
+        with:
+          path: test/fixtures
+          fail: "false"
+          check-runtime: "false"
+      - name: Expect the fixture problems to be found
+        run: |
+          echo "status=${{ steps.run.outputs.status }} errors=${{ steps.run.outputs.errors }} warnings=${{ steps.run.outputs.warnings }}"
+          test "${{ steps.run.outputs.status }}" = "action-needed"
+          test "${{ steps.run.outputs.errors }}" = "3"
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        id: run
+        with:
+          path: test/clean
+          check-runtime: "false"
+      - run: test "${{ steps.run.outputs.status }}" = "ok"

@@ -1,0 +1,40 @@
+name: PHP2Shell Check
+description: Fail the build if your project runs or pins a PHP version without the PHP2Shell fix (runner, composer.json, Dockerfiles, workflows).
+author: Kyle Clouthier
+branding:
+  icon: shield
+  color: red
+inputs:
+  path:
+    description: Folder to scan.
+    required: false
+    default: "."
+  fail:
+    description: Fail the job when a version without the fix is found ("true" or "false").
+    required: false
+    default: "true"
+  check-runtime:
+    description: Also check the PHP installed on the runner ("true" or "false").
+    required: false
+    default: "true"
+outputs:
+  status:
+    description: '"ok", "review" (warnings only) or "action-needed".'
+    value: ${{ steps.check.outputs.status }}
+  errors:
+    description: Number of versions without the fix.
+    value: ${{ steps.check.outputs.errors }}
+  warnings:
+    description: Number of things to review.
+    value: ${{ steps.check.outputs.warnings }}
+runs:
+  using: composite
+  steps:
+    - id: check
+      shell: bash
+      env:
+        INPUT_FAIL: ${{ inputs.fail }}
+        INPUT_CHECK_RUNTIME: ${{ inputs.check-runtime }}
+      run: |
+        PY=$(command -v python3 || command -v python)
+        "$PY" "${{ github.action_path }}/check.py" "${{ inputs.path }}"
