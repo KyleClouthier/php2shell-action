@@ -1,5 +1,6 @@
 # PHP2Shell Check (GitHub Action)
 
+[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-PHP2Shell%20Check-2ea44f?logo=github)](https://github.com/marketplace/actions/php2shell-check)
 [![self-test](https://github.com/KyleClouthier/php2shell-action/actions/workflows/test.yml/badge.svg)](https://github.com/KyleClouthier/php2shell-action/actions/workflows/test.yml)
 ![PHP2Shell](https://img.shields.io/badge/PHP2Shell-CVSS%209.2-e5534b) ![MIT](https://img.shields.io/badge/licence-MIT-blue)
 
