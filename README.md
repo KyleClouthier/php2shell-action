@@ -66,6 +66,8 @@ Outputs: `status` (`ok`, `review` or `action-needed`), `errors`, `warnings`. A s
 - [php2shell-check](https://github.com/KyleClouthier/php2shell-check): a self-deleting file for a live site's exact
   PHP version, and a script that finds every PHP install on a server.
 - [Check any live site from the browser](https://simgen.dev/php-patch-check), nothing to install.
+- [AgentDecoy scan](https://github.com/marketplace/actions/agentdecoy-scan): the same kind of CI check for AI-era
+  threats (leaked keys, AI tool configs, open MCP and AI servers, hidden prompts). Run both after each deploy.
 
 Built by Kyle Clouthier ([simgen.dev](https://simgen.dev)). MIT licence. If it helped, a star helps the next team
 find it.
